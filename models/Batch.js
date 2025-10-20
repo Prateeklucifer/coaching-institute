@@ -20,7 +20,7 @@ const Batch = sequelize.define('batches', {
     type: DataTypes.STRING,
     allowNull: false,
     field: 'batch_code',
-    unique: true,
+    unique: { name: 'batches_batch_code_unique' },
   },
   subjects: {
     type: DataTypes.TEXT,
