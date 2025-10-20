@@ -1,7 +1,7 @@
 import ConnectToDB from "@/DB/ConnectToDB";
-import Users from "@/schema/Users";
+import { User } from "@/models";
 import { NextResponse } from "next/server";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export async function POST(req) {
   try {
@@ -27,21 +27,19 @@ export async function POST(req) {
     }
 
     // Check for existing user
-    const existingUser = await Users.findOne({ email });
+    const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return NextResponse.json({ error: "Email already registered" }, { status: 409 });
     }
 
     // Create new user
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new Users({
+    await User.create({
       name,
       email,
       password: hashedPassword,
       isAdmin: false,
     });
-
-    await user.save();
 
     return NextResponse.json(
       { success: true, message: "Account created successfully" },

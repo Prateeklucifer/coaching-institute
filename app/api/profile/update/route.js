@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import ConnectToDB from "@/DB/ConnectToDB";
-import Users from "@/schema/Users";
+import { User } from "@/models";
 
 export async function PUT(req) {
   try {
@@ -34,7 +34,7 @@ export async function PUT(req) {
     await ConnectToDB();
 
     // Get user
-    const user = await Users.findById(decoded.userId);
+    const user = await User.findByPk(decoded.userId);
     if (!user) {
       return NextResponse.json(
         { error: "User not found" },
@@ -44,7 +44,7 @@ export async function PUT(req) {
 
     // Check if email is taken by another user
     if (email !== user.email) {
-      const existingUser = await Users.findOne({ email });
+      const existingUser = await User.findOne({ where: { email } });
       if (existingUser) {
         return NextResponse.json(
           { error: "Email is already taken" },
@@ -53,9 +53,11 @@ export async function PUT(req) {
       }
     }
 
-    // Update basic info
-    user.name = name;
-    user.email = email;
+    // Prepare update data
+    const updateData = {
+      name,
+      email
+    };
 
     // Handle password change if requested
     if (currentPassword && newPassword) {
@@ -77,20 +79,24 @@ export async function PUT(req) {
       }
 
       // Hash and set new password
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
-      user.password = hashedPassword;
+      updateData.password = await bcrypt.hash(newPassword, 10);
     }
 
-    // Save changes
-    await user.save();
+    // Update user
+    await user.update(updateData);
+
+    // Get updated user data
+    const updatedUser = await User.findByPk(decoded.userId, {
+      attributes: { exclude: ['password'] } // Don't return the password
+    });
 
     return NextResponse.json({
       message: "Profile updated successfully",
       user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin
+        id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin
       }
     });
 

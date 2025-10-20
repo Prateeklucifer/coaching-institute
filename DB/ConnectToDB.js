@@ -1,14 +1,23 @@
-import mongoose from "mongoose";
+import sequelize from './sequelize';
+
+let hasSynced = false;
 
 export default async function ConnectToDB() {
   try {
-    mongoose.connect(process.env.MONGODB_URL, {
-      dbName: process.env.MONGODB_DB_NAME,
-    });
-
-    console.log('Successfully connected to MongoDB');
+    await sequelize.authenticate();
+    // In development, keep schemas up-to-date automatically; in other
+    // environments just ensure the tables exist without altering them.
+    if (!hasSynced) {
+      if (process.env.NODE_ENV === 'development') {
+        await sequelize.sync({ alter: true });
+      } else {
+        await sequelize.sync();
+      }
+      hasSynced = true;
+    }
+    console.log('Successfully connected to MySQL');
   } catch (error) {
-    console.error('MongoDB connection error:', error);
-    throw error; // Re-throw the error to handle it in the registration API
+    console.error('MySQL connection error:', error);
+    throw error;
   }
 }
