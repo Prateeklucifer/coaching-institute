@@ -17,8 +17,8 @@ export default function Tests() {
       const res = await fetch('/api/tests');
       const data = await res.json();
       if (res.ok) {
-        console.log('Fetched tests:', data.tests);
-        setTests(data.tests);
+        console.log('Fetched tests:', data.data);
+        setTests(data.data);
       } else {
         throw new Error(data.error || 'Failed to fetch tests');
       }
@@ -65,7 +65,7 @@ export default function Tests() {
         ) : (
           <div className="grid gap-4">
             {tests.map((test) => (
-              <div key={test._id} className="p-4 bg-white rounded-lg shadow">
+              <div key={test.id} className="p-4 bg-white rounded-lg shadow">
                 <div className="flex justify-between items-start">
                   <div>
                     <h2 className="text-lg font-semibold">{test.title}</h2>
@@ -79,7 +79,7 @@ export default function Tests() {
                     )}
                   </div>
                   <Link
-                    href={`/dashboard/tests/${test._id}`}
+                    href={`/dashboard/tests/${test.id}`}
                     className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors whitespace-nowrap"
                   >
                     Take Test
