@@ -12,7 +12,7 @@ export default function TakeTest({ params }) {
   const [answers, setAnswers] = useState({});
   const [showResults, setShowResults] = useState(false);
   const [score, setScore] = useState(0);
-  const resolvedParams = React.use(params);
+  const testId = params.id;
 
   useEffect(() => {
     fetchTest();
@@ -20,15 +20,16 @@ export default function TakeTest({ params }) {
 
   const fetchTest = async () => {
     try {
-      const res = await fetch(`/api/tests/${resolvedParams.id}`);
+      const res = await fetch(`/api/tests/${testId}`);
       const data = await res.json();
       if (res.ok) {
-        console.log('Fetched test data:', data.test);
-        console.log('Questions with correct answers:', data.test.questions);
-        setTest(data.test);
+        const testData = data.data;
+        console.log('Fetched test data:', testData);
+        console.log('Questions with correct answers:', testData.questions);
+        setTest(testData);
         // Initialize answers object
         const initialAnswers = {};
-        data.test.questions.forEach((_, index) => {
+        testData.questions.forEach((_, index) => {
           initialAnswers[index] = null;
         });
         setAnswers(initialAnswers);
