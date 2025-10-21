@@ -23,7 +23,7 @@ export default function Dashboard({ params }) {
     let res = await fetch("http://localhost:3000/api/admin/overview", {
       method: "POST",
       body: JSON.stringify({
-        id: AllInfos[0]._id,
+        id: AllInfos[0].id,
         batchName,
         batchCreatedAt,
         batchCode,

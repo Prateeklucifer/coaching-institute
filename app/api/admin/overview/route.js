@@ -5,7 +5,11 @@ import ConnectToDB from "@/DB/ConnectToDB";
 import { Batch } from "@/models";
 
 export async function POST(req, res) {
-  const { id, batchName, batchCreatedAt, batchCode, subjects } = await req.json();
+  let { id, batchName, batchCreatedAt, batchCode, subjects } = await req.json();
+  if (!id && id !== 0) {
+    return NextResponse.json({ error: 'id is required' }, { status: 400 });
+  }
+  id = Number(id);
   const cookieStore = cookies();
   const token = cookieStore.get("token");
 
