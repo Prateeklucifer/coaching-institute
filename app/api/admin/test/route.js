@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import ConnectToDB from "@/DB/ConnectToDB";
-import Test from "@/schema/Tests";
+import { Test, User } from "@/models";
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
-import Users from "@/schema/Users";
 
 // Verify admin authentication
 async function verifyAdmin(req) {
@@ -16,7 +15,9 @@ async function verifyAdmin(req) {
     }
 
     const decoded = jwt.verify(token.value, process.env.JWT_SECRET || 'your-secret-key');
-    const user = await Users.findById(decoded.userId).select('-password');
+    const user = await User.findByPk(decoded.userId, {
+      attributes: { exclude: ['password'] }
+    });
 
     if (!user || !user.isAdmin) {
       return { success: false, error: 'Unauthorized access' };
@@ -68,11 +69,18 @@ export async function GET(req) {
     await ConnectToDB();
 
     // Get all tests, sorted by creation date
-    const tests = await Test.find({})
-      .sort({ createdAt: -1 })
-      .select('-questions.correctOption'); // Don't send correct answers to client
+    const tests = await Test.findAll({ order: [['createdAt', 'DESC']] });
+    // Remove correct answers before sending to client
+    const sanitizedTests = tests.map(test => {
+      const t = test.toJSON();
+      t.questions = t.questions.map(q => {
+        const { correctOption, ...rest } = q;
+        return rest;
+      });
+      return t;
+    });
 
-    return NextResponse.json({ tests }, { status: 200 });
+    return NextResponse.json({ tests: sanitizedTests }, { status: 200 });
   } catch (error) {
     console.error("Error fetching tests:", error);
     return NextResponse.json(

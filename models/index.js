@@ -2,6 +2,7 @@ import User from './User.js';
 import Batch from './Batch.js';
 import Test from './Test.js';
 import TestSubmission from './TestSubmission.js';
+import Blog from './Blog.js';
 
 // Define associations
 Test.hasMany(TestSubmission, {
@@ -29,7 +30,7 @@ const models = {
   Batch,
   Test,
   TestSubmission,
-  // Add other models here
+  Blog,
 };
 
 export default models;
@@ -39,4 +40,5 @@ export {
   Batch,
   Test,
   TestSubmission,
+  Blog,
 };

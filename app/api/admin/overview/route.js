@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import jsonwebtoken from "jsonwebtoken";
 import { cookies } from "next/headers";
 import ConnectToDB from "@/DB/ConnectToDB";
-import Batch1 from "@/schema/Batch1";
+import { Batch } from "@/models";
 
 export async function POST(req, res) {
   const { id, batchName, batchCreatedAt, batchCode, subjects } = await req.json();
@@ -19,12 +19,15 @@ export async function POST(req, res) {
           ConnectToDB();
 
 
-            await Batch1.findByIdAndUpdate(id, {
-                batchName: batchName,
-                batchCreatedAt: batchCreatedAt,
-                batchCode: batchCode,
-                subjects: subjects
-            });
+            await Batch.update(
+                {
+                  batchName,
+                  batchCreatedAt,
+                  batchCode,
+                  subjects
+                },
+                { where: { id } }
+            );
 
 
           return NextResponse.json({ message: "Update Sucessfull" });

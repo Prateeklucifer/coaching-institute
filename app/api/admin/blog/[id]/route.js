@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import ConnectToDB from "@/DB/ConnectToDB";
-import Blog from "@/schema/Blogs";
+import { Blog, User } from "@/models";
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
-import Users from "@/schema/Users";
 
 // Verify admin authentication
 async function verifyAdmin(req) {
@@ -16,7 +15,7 @@ async function verifyAdmin(req) {
     }
 
     const decoded = jwt.verify(token.value, process.env.JWT_SECRET || 'your-secret-key');
-    const user = await Users.findById(decoded.userId).select('-password');
+    const user = await User.findByPk(decoded.userId, { attributes: { exclude: ['password'] } });
 
     if (!user || !user.isAdmin) {
       return { success: false, error: 'Unauthorized access' };
@@ -33,9 +32,9 @@ export async function GET(req, { params }) {
   try {
     await ConnectToDB();
     
-    const blog = await Blog.findById(params.id).select('-__v');
+    const blog = await Blog.findByPk(params.id);
     
-    if (!blog) {
+    if (!blog || (Array.isArray(blog) && blog.length === 0)) {
       return NextResponse.json(
         { error: "Blog not found" },
         { status: 404 }
@@ -75,7 +74,7 @@ export async function PUT(req, { params }) {
 
     await ConnectToDB();
 
-    const blog = await Blog.findByIdAndUpdate(
+    const [affected] = await Blog.update(
       params.id,
       {
         title,
@@ -86,10 +85,12 @@ export async function PUT(req, { params }) {
         coverImage,
         updatedAt: new Date()
       },
-      { new: true, runValidators: true }
+      { where: { id: params.id } }
     );
 
-    if (!blog) {
+    const blog = await Blog.findByPk(params.id);
+
+    if (!blog || (Array.isArray(blog) && blog.length === 0)) {
       return NextResponse.json(
         { error: "Blog not found" },
         { status: 404 }
@@ -123,9 +124,9 @@ export async function DELETE(req, { params }) {
 
     await ConnectToDB();
 
-    const blog = await Blog.findByIdAndDelete(params.id);
+    const blog = await Blog.destroy({ where: { id: params.id } });
 
-    if (!blog) {
+    if (!blog || (Array.isArray(blog) && blog.length === 0)) {
       return NextResponse.json(
         { error: "Blog not found" },
         { status: 404 }

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import jsonwebtoken from "jsonwebtoken";
 import { cookies } from "next/headers";
 import ConnectToDB from "@/DB/ConnectToDB";
-import Batch1 from "@/schema/Batch1";
+import { Batch } from "@/models";
 
 export async function DELETE(req, res) {
   const { id, AllData } = await req.json();
@@ -18,9 +18,10 @@ export async function DELETE(req, res) {
         try {
           ConnectToDB();
 
-            await Batch1.findByIdAndUpdate(id, {
-              announcements: AllData
-            });
+            await Batch.update(
+              { announcements: AllData },
+              { where: { id } }
+            );
 
           return NextResponse.json({ message: "Update Sucessfull" });
         } catch (error) {
@@ -55,9 +56,10 @@ export async function POST(req, res) {
         try {
           ConnectToDB();
 
-            await Batch1.findByIdAndUpdate(id, {
-              announcements: AllData
-            });
+            await Batch.update(
+              { announcements: AllData },
+              { where: { id } }
+            );
 
           return NextResponse.json({ message: "Update Sucessfull" });
         } catch (error) {

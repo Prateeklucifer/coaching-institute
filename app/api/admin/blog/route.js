@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import ConnectToDB from "@/DB/ConnectToDB";
-import Blog from "@/schema/Blogs";
+import { Blog, User } from "@/models";
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
-import Users from "@/schema/Users";
 
 // Verify admin authentication
 async function verifyAdmin(req) {
@@ -16,7 +15,7 @@ async function verifyAdmin(req) {
     }
 
     const decoded = jwt.verify(token.value, process.env.JWT_SECRET || 'your-secret-key');
-    const user = await Users.findById(decoded.userId).select('-password');
+    const user = await User.findByPk(decoded.userId, { attributes: { exclude: ['password'] } });
 
     if (!user || !user.isAdmin) {
       return { success: false, error: 'Unauthorized access' };
@@ -83,9 +82,7 @@ export async function GET(req) {
     await ConnectToDB();
 
     // Get all blogs, sorted by creation date
-    const blogs = await Blog.find({})
-      .sort({ createdAt: -1 })
-      .select('-__v'); // Exclude version key
+    const blogs = await Blog.findAll({ order: [['createdAt', 'DESC']] });
 
     return NextResponse.json({ blogs }, { status: 200 });
   } catch (error) {
