@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import ConnectToDB from "@/DB/ConnectToDB";
-import Test from "@/schema/Tests";
+import { Test, User } from "@/models";
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
-import Users from "@/schema/Users";
 
 // Verify admin authentication
 async function verifyAdmin(req) {
@@ -16,7 +15,7 @@ async function verifyAdmin(req) {
     }
 
     const decoded = jwt.verify(token.value, process.env.JWT_SECRET || 'your-secret-key');
-    const user = await Users.findById(decoded.userId).select('-password');
+    const user = await User.findByPk(decoded.userId, { attributes: { exclude: ['password'] } });
 
     if (!user || !user.isAdmin) {
       return { success: false, error: 'Unauthorized access' };
@@ -33,9 +32,9 @@ export async function GET(req, { params }) {
   try {
     await ConnectToDB();
     
-    const test = await Test.findById(params.id);
+    const test = await Test.findByPk(params.id);
     
-    if (!test) {
+    if (!test || (Array.isArray(test) && test.length === 0)) {
       return NextResponse.json(
         { error: "Test not found" },
         { status: 404 }
@@ -82,16 +81,17 @@ export async function PUT(req, { params }) {
 
     await ConnectToDB();
 
-    const test = await Test.findByIdAndUpdate(
-      params.id,
+    await Test.update(
       {
         ...testData,
         updatedAt: new Date()
       },
-      { new: true, runValidators: true }
+      { where: { id: params.id } }
     );
 
-    if (!test) {
+    const test = await Test.findByPk(params.id);
+
+    if (!test || (Array.isArray(test) && test.length === 0)) {
       return NextResponse.json(
         { error: "Test not found" },
         { status: 404 }
@@ -125,9 +125,9 @@ export async function DELETE(req, { params }) {
 
     await ConnectToDB();
 
-    const test = await Test.findByIdAndDelete(params.id);
+    const deleted = await Test.destroy({ where: { id: params.id } });
 
-    if (!test) {
+    if (!test || (Array.isArray(test) && test.length === 0)) {
       return NextResponse.json(
         { error: "Test not found" },
         { status: 404 }
