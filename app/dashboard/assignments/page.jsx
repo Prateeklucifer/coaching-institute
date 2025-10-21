@@ -8,7 +8,7 @@ export default function AssignmentsPage() {
   const [render, setRender] = useState(false);
 
   const getAllInfos = async () => {
-    let res = await fetch("http://localhost:3000/api/studymaterial");
+    let res = await fetch("http://localhost:3000/api/batch1");
     let data = await res.json();
     setAllInfos(data.data);
   };
