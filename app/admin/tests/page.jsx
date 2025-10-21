@@ -95,8 +95,7 @@ export default function Tests() {
     setLoading(true);
     
     try {
-      const url = currentTest 
-        ? `/api/admin/test/${currentTest._id}`
+      const url = currentTest ? `/api/admin/test/${currentTest.id}`
         : '/api/admin/test';
       
       const method = currentTest ? 'PUT' : 'POST';
@@ -326,7 +325,7 @@ export default function Tests() {
         <div className="grid gap-6">
           {tests.map(test => (
             <div 
-              key={test._id} 
+              key={test.id} 
               className="bg-white p-6 rounded-lg shadow-sm"
             >
               <div className="flex justify-between items-start mb-4">
@@ -342,7 +341,7 @@ export default function Tests() {
                     Edit
                   </button>
                   <button
-                    onClick={() => handleDelete(test._id)}
+                    onClick={() => handleDelete(test.id)}
                     className="text-red-600 hover:underline"
                   >
                     Delete

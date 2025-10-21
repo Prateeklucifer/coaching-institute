@@ -29,10 +29,11 @@ async function verifyAdmin(req) {
 
 // Get a specific test
 export async function GET(req, { params }) {
+  const numericId = Number(params.id);
   try {
     await ConnectToDB();
     
-    const test = await Test.findByPk(params.id);
+    const test = await Test.findByPk(numericId);
     
     if (!test || (Array.isArray(test) && test.length === 0)) {
       return NextResponse.json(
@@ -67,6 +68,7 @@ export async function GET(req, { params }) {
 
 // Update a test
 export async function PUT(req, { params }) {
+  const numericId = Number(params.id);
   try {
     // Verify if user is admin
     const authResult = await verifyAdmin(req);
@@ -86,10 +88,10 @@ export async function PUT(req, { params }) {
         ...testData,
         updatedAt: new Date()
       },
-      { where: { id: params.id } }
+      { where: { id: numericId } }
     );
 
-    const test = await Test.findByPk(params.id);
+    const test = await Test.findByPk(numericId);
 
     if (!test || (Array.isArray(test) && test.length === 0)) {
       return NextResponse.json(
@@ -113,6 +115,7 @@ export async function PUT(req, { params }) {
 
 // Delete a test
 export async function DELETE(req, { params }) {
+  const numericId = Number(params.id);
   try {
     // Verify if user is admin
     const authResult = await verifyAdmin(req);
@@ -125,9 +128,9 @@ export async function DELETE(req, { params }) {
 
     await ConnectToDB();
 
-    const deleted = await Test.destroy({ where: { id: params.id } });
+    const deleted = await Test.destroy({ where: { id: numericId } });
 
-    if (!test || (Array.isArray(test) && test.length === 0)) {
+    if (deleted === 0) {
       return NextResponse.json(
         { error: "Test not found" },
         { status: 404 }

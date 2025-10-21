@@ -70,17 +70,8 @@ export async function GET(req) {
 
     // Get all tests, sorted by creation date
     const tests = await Test.findAll({ order: [['createdAt', 'DESC']] });
-    // Remove correct answers before sending to client
-    const sanitizedTests = tests.map(test => {
-      const t = test.toJSON();
-      t.questions = t.questions.map(q => {
-        const { correctOption, ...rest } = q;
-        return rest;
-      });
-      return t;
-    });
 
-    return NextResponse.json({ tests: sanitizedTests }, { status: 200 });
+    return NextResponse.json({ tests }, { status: 200 });
   } catch (error) {
     console.error("Error fetching tests:", error);
     return NextResponse.json(
