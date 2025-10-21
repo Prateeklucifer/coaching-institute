@@ -57,10 +57,10 @@ export default function Blogs() {
         <div className="grid gap-8">
           {blogs.map((blog) => (
             <article 
-              key={blog._id} 
+              key={blog.id} 
               className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
             >
-              <Link href={`/blogs/${blog._id}`} className="flex flex-col md:flex-row">
+              <Link href={`/blogs/${blog.id}`} className="flex flex-col md:flex-row">
                 <div className="md:w-1/3 relative h-64 md:h-auto">
                   <Image
                     src={blog.coverImage}

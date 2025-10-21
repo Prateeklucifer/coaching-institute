@@ -1,16 +1,17 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-export default function BlogPost({ params }) {
+export default function BlogPost() {
   const router = useRouter();
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const resolvedParams = React.use(params);
+  const { id } = useParams();
 
   
 
@@ -20,7 +21,7 @@ export default function BlogPost({ params }) {
 
   const fetchBlog = async () => {
     try {
-      const res = await fetch(`/api/admin/blog/${resolvedParams.id}`);
+      const res = await fetch(`/api/admin/blog/${id}`);
       const data = await res.json();
       
       if (res.ok) {
