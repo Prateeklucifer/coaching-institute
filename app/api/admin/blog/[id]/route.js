@@ -75,7 +75,6 @@ export async function PUT(req, { params }) {
     await ConnectToDB();
 
     const [affected] = await Blog.update(
-      params.id,
       {
         title,
         description,

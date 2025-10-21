@@ -99,7 +99,7 @@ export default function BlogManagement() {
       paragraphThree: blog.paragraphThree,
       coverImage: blog.coverImage
     });
-    setEditingId(blog._id);
+    setEditingId(blog.id);
     setShowForm(true);
   };
 
@@ -260,7 +260,7 @@ export default function BlogManagement() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {blogs.map(blog => (
-          <div key={blog._id} className="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div key={blog.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
             <div className="relative h-48">
               <Image
                 src={blog.coverImage}
@@ -280,7 +280,7 @@ export default function BlogManagement() {
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(blog._id)}
+                  onClick={() => handleDelete(blog.id)}
                   className="text-red-600 hover:underline"
                 >
                   Delete
