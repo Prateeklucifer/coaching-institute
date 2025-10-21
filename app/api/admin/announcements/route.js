@@ -5,7 +5,11 @@ import ConnectToDB from "@/DB/ConnectToDB";
 import { Batch } from "@/models";
 
 export async function DELETE(req, res) {
-  const { id, AllData } = await req.json();
+  let { id, AllData } = await req.json();
+  if (id === undefined || id === null) {
+    return NextResponse.json({ error: 'id is required' }, { status: 400 });
+  }
+  id = Number(id);
   const cookieStore = cookies();
   const token = cookieStore.get("token");
 
@@ -43,7 +47,11 @@ export async function DELETE(req, res) {
 }
 
 export async function POST(req, res) {
-  const { id, AllData } = await req.json();
+  let { id, AllData } = await req.json();
+  if (id === undefined || id === null) {
+    return NextResponse.json({ error: 'id is required' }, { status: 400 });
+  }
+  id = Number(id);
   const cookieStore = cookies();
   const token = cookieStore.get("token");
 

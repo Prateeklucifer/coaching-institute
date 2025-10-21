@@ -35,7 +35,7 @@ export default function AnnouncementsPage() {
     let res = await fetch("http://localhost:3000/api/admin/announcements", {
       method: "POST",
       body: JSON.stringify({
-        id: AllInfos[0]._id,
+        id: AllInfos[0].id,
         AllData: AllInfos[0].announcements,
       }),
     });
