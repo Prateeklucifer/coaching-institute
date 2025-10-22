@@ -122,8 +122,9 @@ export default function ProfilePage() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded focus:outline-none"
+              className="w-full px-3 py-2 border rounded focus:outline-none text-slate-600"
               required
+              disabled
             />
           </div>
 

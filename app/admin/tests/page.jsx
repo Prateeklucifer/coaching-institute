@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useToast } from '../../components/ToastContext';
 import Link from 'next/link';
 
 export default function Tests() {
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { showToast } = useToast();
   const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [currentTest, setCurrentTest] = useState(null);
@@ -109,6 +111,7 @@ export default function Tests() {
       });
 
       if (res.ok) {
+        showToast(currentTest ? 'updated successfully' : 'created successfully');
         setShowForm(false);
         setFormData({
           title: '',
@@ -148,22 +151,20 @@ export default function Tests() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this test?')) {
-      return;
-    }
-
+    
     try {
       const res = await fetch(`/api/admin/test/${id}`, {
         method: 'DELETE'
       });
 
       if (res.ok) {
+        showToast('deleted successfully', 'error');
         fetchTests();
       } else {
-        setError('Failed to delete test');
+        setError('Failed to delete');
       }
     } catch (error) {
-      setError('Error deleting test');
+      setError('Error deleting');
     }
   };
 

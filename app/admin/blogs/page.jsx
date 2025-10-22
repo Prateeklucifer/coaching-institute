@@ -3,9 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useToast } from "../../components/ToastContext";
 
 export default function BlogManagement() {
   const router = useRouter();
+    const { showToast } = useToast();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -30,6 +32,7 @@ export default function BlogManagement() {
       const data = await res.json();
       if (res.ok) {
         setBlogs(data.blogs);
+
       } else {
         setError('Failed to fetch blogs');
       }
@@ -68,6 +71,7 @@ export default function BlogManagement() {
       });
 
       if (res.ok) {
+        showToast('saved successfully');
         setShowForm(false);
         setFormData({
           title: '',
@@ -104,9 +108,6 @@ export default function BlogManagement() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this blog?')) {
-      return;
-    }
 
     try {
       const res = await fetch(`/api/admin/blog/${id}`, {
@@ -115,6 +116,7 @@ export default function BlogManagement() {
 
       if (res.ok) {
         fetchBlogs();
+        showToast('deleted successfully', 'error');
       } else {
         setError('Failed to delete blog');
       }

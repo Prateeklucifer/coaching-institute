@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useToast } from "../../components/ToastContext";
 import { MdDelete } from "react-icons/md";
 import { IoIosAdd } from "react-icons/io";
 import { HiOutlineChevronDown } from "react-icons/hi2";
 
 export default function AnnouncementsPage() {
+  const { showToast } = useToast();
   const [AllInfos, setAllInfos] = useState(undefined);
 
   const getAllInfos = async () => {
@@ -39,22 +41,31 @@ export default function AnnouncementsPage() {
   };
 
   const updateData = async () => {
-    let res = await fetch("http://localhost:3000/api/admin/assignments", {
+    const res = await fetch("/api/admin/assignments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       method: "POST",
       body: JSON.stringify({
         id: AllInfos[0].id,
         AllData: AllInfos[0].assignments,
       }),
     });
+    if (res.ok) {
+      showToast("saved successfully");
+    } else {
+      showToast("Failed to save", "error");
+    }
   };
 
   const deleteElement = (index) => {
     let data = [...AllInfos];
     data[0].assignments.splice(index, 1);
+    showToast("Column deleted", 'error');
     setAllInfos(data);
   };
 
-  const AddElement = (index) => {
+  const AddElement = () => {
+    showToast("New column added");
     let data = [...AllInfos];
     data[0].assignments.push({
       title: "Add Title",

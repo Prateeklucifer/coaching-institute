@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useToast } from "../components/ToastContext";
 
 export default function Dashboard({ params }) {
   const [AllInfos, setAllInfos] = useState(undefined);
   const [batchName, setBatchName] = useState(undefined);
   const [batchCreatedAt, setBatchCreatedAt] = useState(undefined);
+  const { showToast } = useToast();
   const [batchCode, setBatchCode] = useState(undefined);
   const [subjects, setSubjects] = useState(undefined);
 
@@ -20,7 +22,7 @@ export default function Dashboard({ params }) {
   };
 
   const updateData = async () => {
-    let res = await fetch("http://localhost:3000/api/admin/overview", {
+    const res = await fetch("/api/admin/overview", {
       method: "POST",
       body: JSON.stringify({
         id: AllInfos[0].id,
@@ -31,9 +33,10 @@ export default function Dashboard({ params }) {
       }),
     });
 
-    if (res.status == 200) {
-      console.log("works")
+    if (res.ok) {
+      showToast("saved successfully");
     } else {
+      showToast("Failed to save", "error");
     }
   };
 

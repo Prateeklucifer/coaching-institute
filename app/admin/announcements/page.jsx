@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useToast } from "../../components/ToastContext";
 import { MdDelete } from "react-icons/md";
 import { IoIosAdd } from "react-icons/io";
 import { HiOutlineChevronDown } from "react-icons/hi2";
 
 export default function AnnouncementsPage() {
+  const { showToast } = useToast();
   const [AllInfos, setAllInfos] = useState(undefined);
 
   const getAllInfos = async () => {
@@ -18,36 +20,48 @@ export default function AnnouncementsPage() {
     let data = [...AllInfos];
     data[0].announcements[index].title = event.target.value;
     setAllInfos(data);
+
   };
 
   const updateMentor = (event, index) => {
     let data = [...AllInfos];
     data[0].announcements[index].mentor = event.target.value;
     setAllInfos(data);
+  
   };
   const updateMessage = (event, index) => {
     let data = [...AllInfos];
     data[0].announcements[index].message = event.target.value;
     setAllInfos(data);
+ 
   };
 
   const updateData = async () => {
-    let res = await fetch("http://localhost:3000/api/admin/announcements", {
+    const res = await fetch("/api/admin/announcements", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         id: AllInfos[0].id,
         AllData: AllInfos[0].announcements,
       }),
     });
+      if (res.ok) {
+        showToast("saved successfully");
+      } else {
+        showToast("Failed to save", "error");
+      }
   };
 
   const deleteElement = (index) => {
     let data = [...AllInfos];
     data[0].announcements.splice(index, 1);
     setAllInfos(data);
+    showToast("Column deleted", "error");
   };
 
-  const AddElement = (index) => {
+  const AddElement = () => {
     let data = [...AllInfos];
     data[0].announcements.push({
       title: "Add Title",
@@ -56,6 +70,7 @@ export default function AnnouncementsPage() {
 
     });
     setAllInfos(data);
+    showToast("New column added");
   };
 
   useEffect(() => {

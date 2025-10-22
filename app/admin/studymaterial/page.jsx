@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useToast } from "../../components/ToastContext";
 import { MdDelete } from "react-icons/md";
 import { IoIosAdd } from "react-icons/io";
 import { HiOutlineChevronDown } from "react-icons/hi2";
 
 export default function studyMaterials() {
+  const { showToast } = useToast();
   const [AllInfos, setAllInfos] = useState(undefined);
 
   const getAllInfos = async () => {
@@ -39,23 +41,34 @@ export default function studyMaterials() {
   };
 
   const deleteElement = (index) => {
-    let data = [...AllInfos];
+    const data = [...AllInfos];
     data[0].studyMaterial.splice(index, 1);
     setAllInfos(data);
+    showToast("Column deleted", 'error');
   };
 
   const updateData = async () => {
-    let res = await fetch("http://localhost:3000/api/admin/studymaterial", {
+    const res = await fetch("/api/admin/studymaterial", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         id: AllInfos[0].id,
         AllData: AllInfos[0].studyMaterial,
       }),
     });
+    if (res.ok) {
+      showToast("saved successfully");
+    } else {
+      showToast("Failed to save", "error");
+    }
+    // network completed, ensure toast always visible even if fetch resolves too fast
+    setTimeout(() => {}, 0);
   };
 
-  const AddElement = (index) => {
-    let data = [...AllInfos];
+  const AddElement = () => {
+    const data = [...AllInfos];
     data[0].studyMaterial.push({
       title: "Add Title",
       mentor: "Add mentor",
@@ -63,6 +76,7 @@ export default function studyMaterials() {
       resourceType: "Add resource Type",
     });
     setAllInfos(data);
+    showToast("New column added");
   };
 
   useEffect(() => {
