@@ -179,7 +179,7 @@ export default function AdminDashboard() {
               <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
               Refresh
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors shadow-sm" onClick={()=>{window.print()}}>
               <Download size={16} />
               Export
             </button>
@@ -256,11 +256,11 @@ export default function AdminDashboard() {
                 <div>
                   <p className="text-sm font-medium text-gray-500">{stat.title}</p>
                   <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
-                  <p className="text-xs text-gray-500 mt-1">
+                  {/* <p className="text-xs text-gray-500 mt-1">
                     <span className={stat.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}>
                       {stat.change}
                     </span> from last month
-                  </p>
+                  </p> */}
                 </div>
                 <div className={`p-3 rounded-full ${stat.bg}`}>
                   {stat.icon}
@@ -351,12 +351,12 @@ export default function AdminDashboard() {
                       <tr key={item.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-900 font-mono">
-                            {item.transactionId.substring(0, 8)}...
+                            {item.transactionId}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-900">{item.senderName}</div>
-                          <div className="text-xs text-gray-500">ID: {item.userId || 'N/A'}</div>
+                       
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-semibold text-gray-900">
@@ -394,9 +394,7 @@ export default function AdminDashboard() {
                             {updatingId === item.id && (
                               <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
                             )}
-                            <button className="p-1.5 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
-                              <MoreHorizontal className="w-4 h-4" />
-                            </button>
+                     
                           </div>
                         </td>
                       </tr>
@@ -407,49 +405,7 @@ export default function AdminDashboard() {
             </table>
           </div>
           
-          {/* Pagination */}
-          <div className="bg-white px-6 py-3 flex items-center justify-between border-t border-gray-200">
-            <div className="flex-1 flex justify-between sm:hidden">
-              <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                Previous
-              </button>
-              <button className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                Next
-              </button>
-            </div>
-            <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-              <div>
-                <p className="text-sm text-gray-700">
-                  Showing <span className="font-medium">1</span> to <span className="font-medium">10</span> of{' '}
-                  <span className="font-medium">
-                    {filteredPayments.length}
-                  </span>{' '}
-                  results
-                </p>
-              </div>
-              <div>
-                <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                  <button className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                    <span className="sr-only">Previous</span>
-                    <span className="h-5 w-5">«</span>
-                  </button>
-                  <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600 hover:bg-blue-100">
-                    1
-                  </button>
-                  <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    2
-                  </button>
-                  <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    3
-                  </button>
-                  <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                    <span className="sr-only">Next</span>
-                    <span className="h-5 w-5">»</span>
-                  </button>
-                </nav>
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
     </div>

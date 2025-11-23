@@ -12,8 +12,8 @@ const plans = [
     name: 'Basic Plan',
     price: '999',
     currency: '₹',
-    period: '/month',
-    duration: '3 months',
+    period: '/year',
+    duration: '1 year',
     description: 'Ideal for beginners starting their learning journey',
     popular: false,
     buttonText: 'Enroll Now',
@@ -169,16 +169,6 @@ export default function PricingPage() {
               </div>
             </div>
           ))}
-        </div>
-        
-        <div className="mt-16 bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-          <div className="max-w-3xl mx-auto text-center">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Need help choosing the right plan?</h3>
-            <p className="text-gray-600 mb-6">Our education counselors are here to help you select the perfect learning path based on your goals and schedule.</p>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200">
-              Contact Our Support Team
-            </button>
-          </div>
         </div>
       </div>
     </div>
