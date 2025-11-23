@@ -12,6 +12,7 @@
   "dependencies": {
     "@auth/sequelize-adapter": "^1.2.0",
     "bcryptjs": "^2.4.3",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.554.0",

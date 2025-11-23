@@ -1,62 +1,71 @@
 'use client';
 
 import React from 'react';
-import { Check, X, Sparkles } from 'lucide-react';
+import { Check, CheckCircle, Clock, Award, BookOpen, Users, FileText, HelpCircle, X, Sparkles } from 'lucide-react';
 
 // ==========================================
 // 🔧 CONFIGURATION
 // ==========================================
 const plans = [
   {
-    id: 'starter',
-    name: 'Starter',
-    price: '100',
-    currency: '$',
-    period: '/mo',
-    description: 'Perfect for trying out the platform.',
+    id: 'basic',
+    name: 'Basic Plan',
+    price: '999',
+    currency: '₹',
+    period: '/month',
+    duration: '3 months',
+    description: 'Ideal for beginners starting their learning journey',
     popular: false,
-    buttonText: 'Get Started Free',
+    buttonText: 'Enroll Now',
     features: [
-      { text: '1 Project', included: true },
-      { text: 'Basic Analytics', included: true },
-      { text: 'Community Support', included: true },
-      { text: 'Custom Domains', included: false },
-      { text: 'API Access', included: false },
+      { text: 'Access to basic study materials', included: true },
+      { text: '2 live classes per week', included: true },
+      { text: 'Weekly assignments', included: true },
+      { text: 'Email support', included: true },
+      { text: 'Doubt clearing sessions', included: false },
+      { text: 'Certificate of completion', included: false },
     ],
+    icon: <BookOpen className="w-8 h-8 text-blue-600" />
   },
   {
-    id: 'pro',
-    name: 'Pro',
-    price: '29',
-    currency: '$',
-    period: '/mo',
-    description: 'Best for freelancers and creators.',
-    popular: true, 
-    buttonText: 'Get Started',
+    id: 'premium',
+    name: 'Premium Plan',
+    price: '1999',
+    currency: '₹',
+    period: '/month',
+    duration: '6 months',
+    description: 'Comprehensive learning experience with additional support',
+    popular: true,
+    buttonText: 'Get Premium',
     features: [
-      { text: '10 Projects', included: true },
-      { text: 'Advanced Analytics', included: true },
-      { text: 'Priority Email Support', included: true },
-      { text: 'Custom Domains', included: true },
-      { text: 'API Access', included: false },
+      { text: 'All Basic Plan features', included: true },
+      { text: '4 live classes per week', included: true },
+      { text: 'Daily doubt clearing sessions', included: true },
+      { text: 'Weekly mock tests', included: true },
+      { text: 'Certificate of completion', included: true },
+      { text: 'Priority support', included: true },
     ],
+    icon: <Award className="w-8 h-8 text-yellow-500" />
   },
   {
-    id: 'business',
-    name: 'Business',
-    price: '99',
-    currency: '$',
-    period: '/mo',
-    description: 'For agencies and large teams.',
+    id: 'elite',
+    name: 'Elite Plan',
+    price: '3499',
+    currency: '₹',
+    period: '/month',
+    duration: '12 months',
+    description: 'Complete package for serious learners',
     popular: false,
-    buttonText: 'Get Started',
+    buttonText: 'Go Elite',
     features: [
-      { text: 'Unlimited Projects', included: true },
-      { text: 'Real-time Analytics', included: true },
-      { text: '24/7 Dedicated Support', included: true },
-      { text: 'Custom Domains', included: true },
-      { text: 'API Access', included: true },
+      { text: 'All Premium Plan features', included: true },
+      { text: 'Unlimited live classes', included: true },
+      { text: '24/7 doubt support', included: true },
+      { text: 'Personalized study plan', included: true },
+      { text: 'Monthly one-on-one mentorship', included: true },
+      { text: 'Guaranteed internship opportunity', included: true },
     ],
+    icon: <Users className="w-8 h-8 text-purple-600" />
   },
 ];
 
@@ -74,73 +83,103 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-20 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="text-center max-w-3xl mx-auto mb-16">
-        <h2 className="text-indigo-600 font-semibold tracking-wide uppercase text-sm mb-2">Pricing</h2>
-        <p className="text-4xl font-extrabold text-gray-900 sm:text-5xl mb-4">
-          Simple, transparent pricing
-        </p>
-        <p className="text-xl text-gray-500">
-          No hidden fees. Cancel anytime.
-        </p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-blue-50 py-16 px-4 sm:px-6 lg:px-8 font-sans">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center max-w-4xl mx-auto mb-16">
+          <h2 className="text-blue-600 font-semibold tracking-wide uppercase text-sm mb-3">Our Pricing Plans</h2>
+          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl mb-4">
+            Affordable Learning Solutions
+          </h1>
+          <p className="text-xl text-gray-600">
+            Choose the perfect plan that fits your learning needs and budget
+          </p>
+        </div>
 
-      <div className="max-w-7xl mx-auto grid gap-8 lg:grid-cols-3 lg:gap-8 items-start">
-        {plans.map((plan) => (
-          <div 
-            key={plan.id}
-            className={`relative rounded-2xl bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex flex-col
-              ${plan.popular 
-                ? 'border-2 border-indigo-600 shadow-xl scale-100 lg:scale-105 z-10' 
-                : 'border border-gray-200 shadow-lg'
-              }`}
-          >
-            {plan.popular && (
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-indigo-600 text-white px-4 py-1 rounded-full text-sm font-medium flex items-center gap-1 shadow-sm">
-                <Sparkles size={14} /> Most Popular
+        <div className="grid gap-8 lg:grid-cols-3 lg:gap-8 items-stretch">
+          {plans.map((plan) => (
+            <div 
+              key={plan.id}
+              className={`relative rounded-2xl transition-all duration-300 hover:shadow-xl flex flex-col overflow-hidden
+                ${plan.popular 
+                  ? 'border-2 border-blue-500 shadow-xl transform lg:scale-105 z-10 bg-white' 
+                  : 'border border-gray-200 bg-white hover:border-blue-200'
+                }`}
+            >
+              {plan.popular && (
+                <div className="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold px-4 py-1 rounded-bl-lg">
+                  MOST POPULAR
+                </div>
+              )}
+
+              <div className="p-8 flex-1 flex flex-col">
+                <div className="flex items-center gap-3 mb-4">
+                  {plan.icon}
+                  <h3 className="text-2xl font-bold text-gray-900">{plan.name}</h3>
+                </div>
+                <p className="text-gray-600 mb-6 min-h-[3rem]">{plan.description}</p>
+                
+                <div className="bg-blue-50 rounded-xl p-4 mb-6">
+                  <div className="flex items-baseline justify-center">
+                    <span className="text-4xl font-extrabold text-blue-700">{plan.currency}{plan.price}</span>
+                    <span className="text-gray-500 ml-2">{plan.period}</span>
+                  </div>
+                  <p className="text-center text-sm text-gray-500 mt-1">Duration: {plan.duration}</p>
+                </div>
+
+                <button
+                  onClick={() => handlePlanSelect(plan)}
+                  className={`w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 mb-8
+                    ${plan.popular 
+                      ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-100 transform hover:scale-105' 
+                      : 'bg-white text-blue-600 border-2 border-blue-600 hover:bg-blue-50 hover:border-blue-700 hover:text-blue-700'
+                    }`}
+                >
+                  {plan.buttonText}
+                </button>
+
+                <div className="mt-auto">
+                  <div className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-4">
+                    <CheckCircle className="w-5 h-5 text-green-500" />
+                    <span>What's included:</span>
+                  </div>
+                  <ul className="space-y-3">
+                    {plan.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        {feature.included ? (
+                          <Check className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                        ) : (
+                          <X className="w-5 h-5 text-gray-300 shrink-0 mt-0.5" />
+                        )}
+                        <span className={`text-sm ${feature.included ? 'text-gray-700' : 'text-gray-400 line-through'}`}>
+                          {feature.text}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            )}
-
-            <div className="p-8 flex-1">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-              <p className="text-gray-500 text-sm mb-6 h-10">{plan.description}</p>
               
-              <div className="flex items-baseline mb-6">
-                <span className="text-4xl font-extrabold text-gray-900">{plan.currency}{plan.price}</span>
-                <span className="text-gray-500 ml-2">{plan.period}</span>
-              </div>
-
-              <button
-                onClick={() => handlePlanSelect(plan)}
-                className={`w-full py-3 px-4 rounded-xl font-semibold transition-colors duration-200 mb-8
-                  ${plan.popular 
-                    ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-200' 
-                    : 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100'
-                  }`}
-              >
-                {plan.buttonText}
-              </button>
-
-              <div className="space-y-4">
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">What's included</p>
-                <ul className="space-y-3">
-                  {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-3">
-                      {feature.included ? (
-                        <Check className="w-5 h-5 text-green-500 shrink-0" />
-                      ) : (
-                        <X className="w-5 h-5 text-gray-300 shrink-0" />
-                      )}
-                      <span className={`text-sm ${feature.included ? 'text-gray-600' : 'text-gray-400 line-through'}`}>
-                        {feature.text}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+              <div className={`px-6 py-3 text-center text-sm font-medium ${
+                plan.popular ? 'bg-blue-50 text-blue-700' : 'bg-gray-50 text-gray-500'
+              }`}>
+                <div className="flex items-center justify-center gap-2">
+                  <HelpCircle className="w-4 h-4" />
+                  <span>7-day money back guarantee</span>
+                </div>
               </div>
             </div>
+          ))}
+        </div>
+        
+        <div className="mt-16 bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+          <div className="max-w-3xl mx-auto text-center">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Need help choosing the right plan?</h3>
+            <p className="text-gray-600 mb-6">Our education counselors are here to help you select the perfect learning path based on your goals and schedule.</p>
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200">
+              Contact Our Support Team
+            </button>
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
