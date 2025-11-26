@@ -136,7 +136,7 @@ export default function PaymentGateway() {
             )}
             
             <h3 className="text-indigo-200 font-medium text-sm uppercase tracking-wider mb-1">Total Amount</h3>
-            <div className="text-4xl font-bold mb-6">${formData.amount}</div>
+            <div className="text-4xl font-bold mb-6">₹{formData.amount}</div>
             
             <div className="bg-white p-4 rounded-xl shadow-lg mb-6 max-w-[240px] mx-auto md:mx-0">
               <div className="aspect-square bg-gray-100 relative rounded-lg overflow-hidden group">
@@ -181,7 +181,7 @@ export default function PaymentGateway() {
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-gray-900">Confirm Payment</h1>
             <p className="text-gray-500 text-sm mt-1">
-              Complete the payment of <strong>${formData.amount}</strong> and enter the transaction details below.
+              Complete the payment of <strong>₹{formData.amount}</strong> and enter the transaction details below.
             </p>
           </div>
 
@@ -242,7 +242,7 @@ export default function PaymentGateway() {
                     <Loader2 className="animate-spin w-5 h-5" /> Verifying...
                   </>
                 ) : (
-                  `Confirm Payment of $${formData.amount}`
+                  `Confirm Payment of ₹${formData.amount}`
                 )}
               </button>
               

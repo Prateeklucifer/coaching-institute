@@ -14,16 +14,16 @@ const plans = [
     currency: '₹',
     period: '/year',
     duration: '1 year',
-    description: 'Ideal for beginners starting their learning journey',
+    description: 'Perfect for students who want to start learning tech fundamentals at their own pace.',
     popular: false,
     buttonText: 'Enroll Now',
     features: [
-      { text: 'Access to basic study materials', included: true },
-      { text: '2 live classes per week', included: true },
-      { text: 'Weekly assignments', included: true },
-      { text: 'Email support', included: true },
-      { text: 'Doubt clearing sessions', included: false },
-      { text: 'Certificate of completion', included: false },
+      { text: 'Access to foundational tech study materials', included: true },
+      { text: '2 live concept classes per week', included: true },
+      { text: 'Weekly practice tasks & quizzes', included: true },
+      { text: 'Email + community support', included: true },
+      { text: 'Doubt sessions (limited)', included: false },
+      { text: 'Completion certificate', included: false },
     ],
     icon: <BookOpen className="w-8 h-8 text-blue-600" />
   },
@@ -34,16 +34,16 @@ const plans = [
     currency: '₹',
     period: '/month',
     duration: '6 months',
-    description: 'Comprehensive learning experience with additional support',
+    description: 'Ideal for serious learners who want structured guidance, regular practice, and consistent support.',
     popular: true,
     buttonText: 'Get Premium',
     features: [
-      { text: 'All Basic Plan features', included: true },
-      { text: '4 live classes per week', included: true },
-      { text: 'Daily doubt clearing sessions', included: true },
-      { text: 'Weekly mock tests', included: true },
-      { text: 'Certificate of completion', included: true },
-      { text: 'Priority support', included: true },
+      { text: 'All Basic Plan materials', included: true },
+      { text: '4 live coding + theory classes per week', included: true },
+      { text: 'Daily doubt-clearing support', included: true },
+      { text: 'Weekly mock tests & assignments', included: true },
+      { text: 'Completion certificate', included: true },
+      { text: 'Priority support from instructors', included: true },
     ],
     icon: <Award className="w-8 h-8 text-yellow-500" />
   },
@@ -54,20 +54,21 @@ const plans = [
     currency: '₹',
     period: '/month',
     duration: '12 months',
-    description: 'Complete package for serious learners',
+    description: 'For dedicated learners aiming for internships and real-world tech skills with full mentor support.',
     popular: false,
     buttonText: 'Go Elite',
     features: [
       { text: 'All Premium Plan features', included: true },
-      { text: 'Unlimited live classes', included: true },
-      { text: '24/7 doubt support', included: true },
-      { text: 'Personalized study plan', included: true },
-      { text: 'Monthly one-on-one mentorship', included: true },
-      { text: 'Guaranteed internship opportunity', included: true },
+      { text: 'Unlimited live classes + workshops', included: true },
+      { text: '24/7 doubt support (chat + voice)', included: true },
+      { text: 'Custom learning roadmap based on goals', included: true },
+      { text: 'Monthly 1-on-1 mentor sessions', included: true },
+      { text: 'Internship & project guidance', included: true },
     ],
     icon: <Users className="w-8 h-8 text-purple-600" />
   },
 ];
+
 
 export default function PricingPage() {
   
@@ -83,14 +84,13 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-blue-50 py-16 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-screen  py-16 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-4xl mx-auto mb-16">
-          <h2 className="text-blue-600 font-semibold tracking-wide uppercase text-sm mb-3">Our Pricing Plans</h2>
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl mb-4">
+          <h1 className="text-center font-bold text-xl lg:text-3xl my-4 ">
             Affordable Learning Solutions
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className=" text-gray-600">
             Choose the perfect plan that fits your learning needs and budget
           </p>
         </div>
@@ -114,13 +114,13 @@ export default function PricingPage() {
               <div className="p-8 flex-1 flex flex-col">
                 <div className="flex items-center gap-3 mb-4">
                   {plan.icon}
-                  <h3 className="text-2xl font-bold text-gray-900">{plan.name}</h3>
+                  <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
                 </div>
-                <p className="text-gray-600 mb-6 min-h-[3rem]">{plan.description}</p>
+                <p className="text-gray-600 mb-6 min-h-[3rem] text-sm">{plan.description}</p>
                 
                 <div className="bg-blue-50 rounded-xl p-4 mb-6">
                   <div className="flex items-baseline justify-center">
-                    <span className="text-4xl font-extrabold text-blue-700">{plan.currency}{plan.price}</span>
+                    <span className="text-3xl font-extrabold text-blue-700">{plan.currency}{plan.price}</span>
                     <span className="text-gray-500 ml-2">{plan.period}</span>
                   </div>
                   <p className="text-center text-sm text-gray-500 mt-1">Duration: {plan.duration}</p>
@@ -162,10 +162,7 @@ export default function PricingPage() {
               <div className={`px-6 py-3 text-center text-sm font-medium ${
                 plan.popular ? 'bg-blue-50 text-blue-700' : 'bg-gray-50 text-gray-500'
               }`}>
-                <div className="flex items-center justify-center gap-2">
-                  <HelpCircle className="w-4 h-4" />
-                  <span>7-day money back guarantee</span>
-                </div>
+    
               </div>
             </div>
           ))}

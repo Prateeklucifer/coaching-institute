@@ -18,8 +18,10 @@ import {
   MoreHorizontal
 } from "lucide-react";
 import { format } from 'date-fns';
+import { useToast } from "@/app/components/ToastContext";
 
 export default function AdminDashboard() {
+    const { showToast } = useToast();
   const [payments, setPayments] = useState([]);
   const [filteredPayments, setFilteredPayments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -108,13 +110,14 @@ export default function AdminDashboard() {
         setPayments((prev) =>
           prev.map((p) => (p.id === id ? { ...p, status: newStatus } : p))
         );
-        alert("Status updated successfully");
+       
+        showToast("Status updated successfully", "success");
       } else {
-        alert("Failed to update status");
+        showToast("Failed to update status", "error");
       }
     } catch (error) {
       console.error("Error updating status", error);
-      alert("Error updating status");
+      showToast("Error updating status", "error");
     } finally {
       setUpdatingId(null);
     }
@@ -163,7 +166,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-4 sm:p-6 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-4 sm:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
@@ -179,7 +182,7 @@ export default function AdminDashboard() {
               <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
               Refresh
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors shadow-sm" onClick={()=>{window.print()}}>
+            <button className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium transition-colors shadow-sm" onClick={()=>{window.print()}}>
               <Download size={16} />
               Export
             </button>
@@ -187,8 +190,11 @@ export default function AdminDashboard() {
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-xl p-4 mb-6 shadow-sm border border-gray-100">
+        <div className=" rounded-xl mb-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="my-auto ">
+              <h1 className="text-2xl font-bold">Search here</h1>
+            </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="h-4 w-4 text-gray-400" />
@@ -217,11 +223,6 @@ export default function AdminDashboard() {
                   <option value="rejected">Rejected</option>
                 </select>
               </div>
-            </div>
-            <div className="flex gap-2">
-              <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                Apply Filters
-              </button>
             </div>
           </div>
         </div>
